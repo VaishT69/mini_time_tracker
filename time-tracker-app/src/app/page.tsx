@@ -55,7 +55,7 @@ export default function Home() {
       <div className="mt-80">
         <TaskFormComponent />
       </div>
-      <div className="mt-100">
+      <div className="mt-100 pt-10">
         <TaskListComponent />
       </div>
       <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">

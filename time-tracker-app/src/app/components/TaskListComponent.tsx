@@ -8,14 +8,14 @@ export default function TaskListComponent() {
   const totalHours = tasks.reduce((sum, t) => sum + t.hoursWorked, 0);
 
   return (
-    <div className="mt-10 border-2 lg:px-10 lg:py-10 md:px-20 md:py-20 px-6 py-6 ">
+    <div className="mt-10 border-2 lg:px-10 lg:py-10 md:px-20 md:py-20 px-6 py-6 bg-gray-900">
       <div>
         <h2 className="text-3xl font-bold mb-4 text-center">Tasks</h2>
         <ul className="space-y-6">
           {tasks.map((task, idx) => (
             <li
               key={idx}
-              className="rounded-2xl text-white p-4 px-6 border shadow flex justify-between items-center"
+              className="hover:bg-gray-700 rounded-2xl text-white p-4 px-6 border shadow flex justify-between items-center"
             >
               <div>
                 <span className="font-extrabold inline-block w-24 ">
