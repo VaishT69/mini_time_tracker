@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { success } from "zod/v4";
+// import { success } from "zod/v4";
 
-let tasks: { taskName: string; hoursWorked: number }[] = [];
+const tasks: { taskName: string; hoursWorked: number }[] = [];
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "GET") {
@@ -35,7 +35,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
       index < 0 ||
       index >= tasks.length
     ) {
-      return res.status(200).json({ success: true });
+    return res.status(400).json({ error: "Invalid input" }); 
     }
     tasks[index] = { taskName, hoursWorked };
     return res.status(200).json({ success: true });
