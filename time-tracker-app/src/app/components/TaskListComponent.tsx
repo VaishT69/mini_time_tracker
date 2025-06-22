@@ -4,10 +4,14 @@ import { useState } from "react";
 import { useTaskStore } from "../store/taskStore";
 
 export default function TaskListComponent() {
-  const { tasks, deleteTask, updateTask } = useTaskStore();
+  // const { tasks, deleteTask, updateTask } = useTaskStore();
   const [updateIndex, setUpdateIndex] = useState<number | null>(null);
   const [updatedTaskName, setUpdatedTaskName] = useState("");
   const [updatedHours, setUpdatedHours] = useState("");
+
+  const tasks = useTaskStore((state) => state.tasks);
+  const deleteTask = useTaskStore((state) => state.deleteTask);
+  const updateTask = useTaskStore((state) => state.updateTask);
 
   const startUpdate = (index: number) => {
     setUpdateIndex(index);
@@ -17,10 +21,15 @@ export default function TaskListComponent() {
 
   const confirmUpdate = async () => {
     if (updateIndex === null) return;
-    await updateTask(updateIndex, {
+    // await updateTask(updateIndex, {
+    //   taskName: updatedTaskName,
+    //   hoursWorked: parseFloat(updatedHours),
+    // });
+    updateTask(updateIndex, {
       taskName: updatedTaskName,
       hoursWorked: parseFloat(updatedHours),
     });
+
     setUpdateIndex(null);
     setUpdatedHours("");
     setUpdatedTaskName("");
@@ -62,25 +71,38 @@ export default function TaskListComponent() {
               className="hover:bg-gray-700 rounded-2xl text-white p-4 px-6 border shadow flex justify-between items-center"
             >
               {updateIndex === idx ? (
-                <div className="flex gap-2">
+                <div className="flex  md:flex-row flex-col gap-2">
                   <input
                     type="text"
                     value={updatedTaskName}
                     onChange={(e) => setUpdatedTaskName(e.target.value)}
-                    className="border px-2 py-1 rounded-2xl "
+                    className="border w-[18vh] px-2 py-1 rounded-2xl "
                   />
                   <input
                     type="number"
                     value={updatedHours}
                     onChange={(e) => setUpdatedHours(e.target.value)}
-                    className="border px-2 py-1 rounded-2xl "
+                    className="border w-[18vh] px-2 py-1 rounded-2xl "
                   />
-                  <button
-                    onClick={confirmUpdate}
-                    className="bg-cyan-800 text-white px-3 py-1 rounded-xl mr-2 "
-                  >
-                    Save
-                  </button>
+                  <div className="flex flex-row">
+                    <button
+                      onClick={confirmUpdate}
+                      className="bg-cyan-800 text-white w-20 px-3 py-1 rounded-xl mr-2 "
+                    >
+                      Save
+                    </button>
+                    <button
+                      onClick={() => {
+                        deleteTask(idx);
+                        setUpdateIndex(null); 
+                        setUpdatedTaskName("");
+                        setUpdatedHours("");
+                      }}
+                      className="bg-red-900 text-white w-20 px-3 py-1 rounded-xl"
+                    >
+                      Delete
+                    </button>
+                  </div>
                 </div>
               ) : (
                 <div>
@@ -96,19 +118,22 @@ export default function TaskListComponent() {
               )}
               <div className="flex gap-2">
                 {updateIndex !== idx && (
-                  <button
-                    onClick={() => startUpdate(idx)}
-                    className="bg-cyan-800 text-white px-3 py-1 rounded-xl"
-                  >
-                    Edit
-                  </button>
+                  <>
+                    <button
+                      onClick={() => startUpdate(idx)}
+                      className="bg-cyan-800 text-white px-3 py-1 rounded-xl"
+                    >
+                      Edit
+                    </button>
+
+                    <button
+                      onClick={() => deleteTask(idx)}
+                      className="bg-red-900 text-white px-3 py-1 rounded-xl"
+                    >
+                      Delete
+                    </button>
+                  </>
                 )}
-                <button
-                  onClick={() => deleteTask(idx)}
-                  className="bg-red-900 text-white px-3 py-1 rounded-xl"
-                >
-                  Delete
-                </button>
               </div>
             </li>
           ))}
