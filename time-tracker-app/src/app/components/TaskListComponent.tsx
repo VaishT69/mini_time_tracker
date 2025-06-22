@@ -2,12 +2,26 @@
 
 import { useState } from "react";
 import { useTaskStore } from "../store/taskStore";
+import { z } from "zod";
+
+const taskSchema = z.object({
+  taskName: z.string().min(1, "Task name is required"),
+  hoursWorked: z
+    .string()
+    .refine((val) => !isNaN(Number(val)) && Number(val) > 0, {
+      message: "Hours must be a positive number",
+    }),
+});
 
 export default function TaskListComponent() {
   // const { tasks, deleteTask, updateTask } = useTaskStore();
   const [updateIndex, setUpdateIndex] = useState<number | null>(null);
   const [updatedTaskName, setUpdatedTaskName] = useState("");
   const [updatedHours, setUpdatedHours] = useState("");
+  const [errors, setErrors] = useState<{
+    taskName?: string;
+    hoursWorked?: string;
+  }>({});
 
   const tasks = useTaskStore((state) => state.tasks);
   const deleteTask = useTaskStore((state) => state.deleteTask);
@@ -25,14 +39,37 @@ export default function TaskListComponent() {
     //   taskName: updatedTaskName,
     //   hoursWorked: parseFloat(updatedHours),
     // });
-    updateTask(updateIndex, {
-      taskName: updatedTaskName,
-      hoursWorked: parseFloat(updatedHours),
+    const result = taskSchema.safeParse({
+      taskName: updatedTaskName.trim(),
+      hoursWorked: updatedHours,
+    });
+
+    if (!result.success) {
+      const fieldErrors = result.error.flatten().fieldErrors;
+      setErrors({
+        taskName: fieldErrors.taskName?.[0],
+        hoursWorked: fieldErrors.hoursWorked?.[0],
+      });
+      return;
+    }
+
+    setErrors({});
+
+    await updateTask(updateIndex, {
+      taskName: result.data.taskName,
+      hoursWorked: parseFloat(result.data.hoursWorked),
     });
 
     setUpdateIndex(null);
     setUpdatedHours("");
     setUpdatedTaskName("");
+  };
+  const hourChangeUpdate = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    if (/^\d*\.?\d*$/.test(value)) {
+      setUpdatedHours(value);
+      setErrors((prev) => ({ ...prev, hoursWorked: undefined }));
+    }
   };
 
   const totalHours = tasks.reduce((sum, t) => sum + t.hoursWorked, 0);
@@ -75,15 +112,24 @@ export default function TaskListComponent() {
                   <input
                     type="text"
                     value={updatedTaskName}
-                    onChange={(e) => setUpdatedTaskName(e.target.value)}
+                    onChange={(e) => {
+                      setUpdatedTaskName(e.target.value);
+                      setErrors((prev) => ({ ...prev, taskName: undefined }));
+                    }}
                     className="border w-[18vh] px-2 py-1 rounded-2xl "
                   />
+                    {errors.taskName && (
+                      <p className="text-red-500 text-sm mt-1">{errors.taskName}</p>
+                    )}
                   <input
                     type="number"
                     value={updatedHours}
-                    onChange={(e) => setUpdatedHours(e.target.value)}
+                      onChange={hourChangeUpdate}
                     className="border w-[18vh] px-2 py-1 rounded-2xl "
                   />
+                   {errors.hoursWorked && (
+                      <p className="text-red-500 text-sm mt-1">{errors.hoursWorked}</p>
+                    )}
                   <div className="flex flex-row md:pl-20 mt-4 md:mt-0">
                     <button
                       onClick={confirmUpdate}
@@ -94,7 +140,7 @@ export default function TaskListComponent() {
                     <button
                       onClick={() => {
                         deleteTask(idx);
-                        setUpdateIndex(null); 
+                        setUpdateIndex(null);
                         setUpdatedTaskName("");
                         setUpdatedHours("");
                       }}
@@ -146,3 +192,4 @@ export default function TaskListComponent() {
     </div>
   );
 }
+
