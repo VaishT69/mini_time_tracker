@@ -88,7 +88,7 @@ export default function TaskFormComponent() {
 
         <button
           onClick={addNewTask}
-          className="bg-white text-blue-600 border-blue-400 border-2 px-4 py-2 rounded-xl "
+          className="bg-white text-cyan-800 border-cyan-800 border-2 px-4 py-2 rounded-xl "
         >
           Add Task
         </button>
