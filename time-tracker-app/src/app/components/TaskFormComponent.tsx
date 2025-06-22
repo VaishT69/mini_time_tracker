@@ -1,11 +1,12 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useTaskStore } from "../store/taskStore";
 import { z } from "zod";
 
 export default function TaskFormComponent() {
-  const { addTask, fetchTasks } = useTaskStore();
+  // const { addTask, fetchTasks } = useTaskStore();
+  const addTask = useTaskStore((state) => state.addTask);
   const [task, setTask] = useState("");
   const [hours, setHours] = useState("");
   const [emptyField, setEmptyField] = useState<{
@@ -20,9 +21,9 @@ export default function TaskFormComponent() {
       .positive("Number of hours must be greater than zero"),
   });
 
-  useEffect(() => {
-    fetchTasks();
-  }, []);
+  // useEffect(() => {
+  //   fetchTasks();
+  // }, []);
 
   //   const addNewTask = async () => {
   //     if (!task || !hours) return;
@@ -31,11 +32,32 @@ export default function TaskFormComponent() {
   //     setHours("");
   //   };
 
-  const addNewTask = async () => {
+  // const addNewTask = async () => {
+  //   const result = taskSchema.safeParse({
+  //     taskName: task,
+  //     hoursWorked: parseFloat(hours),
+  //   });
+  //   if (!result.success) {
+  //     const fieldErrors = result.error.flatten().fieldErrors;
+  //     setEmptyField({
+  //       name: fieldErrors.taskName?.[0],
+  //       hours: fieldErrors.hoursWorked?.[0],
+  //     });
+  //     return;
+  //   }
+
+  //   await addTask(result.data);
+  //   setTask("");
+  //   setHours("");
+  //   setEmptyField({});
+  // };
+
+  const addNewTask = () => {
     const result = taskSchema.safeParse({
       taskName: task,
       hoursWorked: parseFloat(hours),
     });
+
     if (!result.success) {
       const fieldErrors = result.error.flatten().fieldErrors;
       setEmptyField({
@@ -45,11 +67,11 @@ export default function TaskFormComponent() {
       return;
     }
 
-    await addTask(result.data);
+    addTask(result.data);
     setTask("");
     setHours("");
     setEmptyField({});
-  };
+  }
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter") addNewTask();
