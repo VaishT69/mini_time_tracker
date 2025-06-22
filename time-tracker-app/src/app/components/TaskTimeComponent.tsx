@@ -87,14 +87,14 @@ export default function TaskTimercomponent() {
       {!timing ? (
         <button
           onClick={startTimer}
-          className="bg-green-200 text-white px-4 py-2 rounded-xl"
+          className="bg-green-700 text-white px-4 py-2 rounded-xl"
         >
           Start Timer
         </button>
       ) : (
         <button
           onClick={stopTimer}
-          className="bg-red-200 text-white px-4 py-2 rounded-xl"
+          className="bg-red-500 text-white px-4 py-2 rounded-xl"
         >
           Stop Timer
         </button>

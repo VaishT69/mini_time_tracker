@@ -79,7 +79,7 @@ export default function TaskFormComponent() {
 
   return (
     <div className="mt-0 bg-gray-900">
-      <div className="flex flex-col border-2 lg:py-20 lg:px-20 md:py-20 md:px-30 py-10 px-10 items-center gap-6 mt-40">
+      <div className="flex flex-col border-2 lg:py-20 lg:px-20 md:py-20 md:px-30 py-10 px-10 items-center gap-6 mt-40 rounded-xl">
         <h1 className="text-white font-bold text-center text-4xl mb-10">Enter Task</h1>
         <input
           type="text"
@@ -87,7 +87,7 @@ export default function TaskFormComponent() {
           onChange={(e) => setTask(e.target.value)}
           onKeyDown={handleKeyDown}
           placeholder="Enter Task Name"
-          className="p-2 border-2 border-white w-60 rounded-2xl"
+          className="p-2 border border-white w-60 rounded-xl"
         />
         {emptyField.name && (
           <p className="text-red-500 text-sm font-extrabold -mt-3">
@@ -100,7 +100,7 @@ export default function TaskFormComponent() {
           onChange={(e) => setHours(e.target.value)}
           onKeyDown={handleKeyDown}
           placeholder="Enter Hours Worked"
-          className="p-2 border-2 border-white w-60 rounded-2xl"
+          className="p-2 border border-white w-60 rounded-xl"
         />
         {emptyField.hours && (
           <p className="text-red-500 text-sm font-extrabold -mt-3">
