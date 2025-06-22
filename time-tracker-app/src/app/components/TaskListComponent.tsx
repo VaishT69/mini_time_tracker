@@ -75,7 +75,7 @@ export default function TaskListComponent() {
   const totalHours = tasks.reduce((sum, t) => sum + t.hoursWorked, 0);
 
   return (
-    <div className="mt-10 border-2 lg:px-10 lg:py-10 md:px-20 md:py-20 px-6 py-6 bg-gray-900">
+    <div className="mt-10 border-2 lg:px-10 lg:py-10 md:px-20 md:py-20 px-6 py-6 bg-gray-900 rounded-xl">
       <div>
         <h2 className="text-3xl font-bold mb-4 text-center">Tasks</h2>
         {/* <ul className="space-y-6">
@@ -130,7 +130,7 @@ export default function TaskListComponent() {
                    {errors.hoursWorked && (
                       <p className="text-red-500 text-sm mt-1">{errors.hoursWorked}</p>
                     )}
-                  <div className="flex flex-row md:pl-20 mt-4 md:mt-0">
+                  <div className="flex flex-row md:ml-20 lg:ml-35 mt-4 md:mt-0">
                     <button
                       onClick={confirmUpdate}
                       className="bg-cyan-800 text-white w-20 px-3 py-1 rounded-xl mr-2 "
@@ -151,7 +151,7 @@ export default function TaskListComponent() {
                   </div>
                 </div>
               ) : (
-                <div>
+                <div className="">
                   <span className="font-extrabold inline-block w-24">
                     {" "}
                     {task.taskName}:
