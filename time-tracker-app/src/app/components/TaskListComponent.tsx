@@ -72,7 +72,7 @@ export default function TaskListComponent() {
     }
   };
 
-  const totalHours = tasks.reduce((sum, t) => sum + t.hoursWorked, 0);
+  const totalHours = tasks.reduce((sum, t) => sum + t.hoursWorked, 0).toFixed(4);
 
   return (
     <div className="mt-10 border-2 lg:px-10 lg:py-10 md:px-20 md:py-20 px-6 py-6 bg-gray-900 rounded-xl">
