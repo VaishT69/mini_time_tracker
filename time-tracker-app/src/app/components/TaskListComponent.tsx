@@ -68,7 +68,7 @@ export default function TaskListComponent() {
           {tasks.map((task, idx) => (
             <li
               key={idx}
-              className="hover:bg-gray-700 rounded-2xl text-white p-4 px-6 border shadow flex justify-between items-center"
+              className="hover:bg-gray-700 rounded-2xl text-white p-4 px-6 border shadow flex justify-center md:justify-between items-center"
             >
               {updateIndex === idx ? (
                 <div className="flex  md:flex-row flex-col gap-2">
@@ -84,7 +84,7 @@ export default function TaskListComponent() {
                     onChange={(e) => setUpdatedHours(e.target.value)}
                     className="border w-[18vh] px-2 py-1 rounded-2xl "
                   />
-                  <div className="flex flex-row">
+                  <div className="flex flex-row md:pl-20 mt-4 md:mt-0">
                     <button
                       onClick={confirmUpdate}
                       className="bg-cyan-800 text-white w-20 px-3 py-1 rounded-xl mr-2 "
